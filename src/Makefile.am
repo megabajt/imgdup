@@ -2,6 +2,7 @@ NULL =
 
 AM_CPPFLAGS =				\
 	$(GLIB_CFLAGS)			\
+	$(GDK_PIXBUF_CFLAGS)		\
 	$(PHASH_CFLAGS)			\
 	$(NULL)
 
@@ -11,11 +12,12 @@ imgdup_SOURCES =			\
 	main.c				\
 	engine.c			\
 	result.c			\
-	phash.cpp			\
+	hash.cpp			\
 	$(NULL)
 
 imgdup_LDADD = 				\
 	$(GLIB_LIBS)			\
+	$(GDK_PIXBUF_LIBS)		\
 	$(PHASH_LIBS)			\
 	$(NULL)
 

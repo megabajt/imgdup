@@ -16,30 +16,31 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#ifndef __ID_HASH_H
+#define __ID_HASH_H
+
 #include "config.h"
 
 #include <glib.h>
-#include <pHash.h>
 
-#include "phash.h"
+G_BEGIN_DECLS
 
-G_DEFINE_QUARK (id-phash-error-quark, id_phash_error)
+#define ID_HASH_ERROR  (id_hash_error_quark ())
 
-guint64
-id_phash_for_file (const gchar *image_path, GError **error)
+typedef enum
 {
-    ulong64 hash;
+    ID_HASH_ERROR_FAILED
+} IdHashError;
 
-    if (ph_dct_imagehash (image_path, hash) == -1) {
-        g_set_error (error, ID_PHASH_ERROR, ID_PHASH_ERROR_FAILED, "Failed to compute phash for %s\n", image_path);
-        return 0;
-    }
+GQuark  id_hash_error_quark             (void);
 
-    return (guint64) hash;
-}
+guint64 id_dhash_for_file               (const gchar *image_path,
+                                         GError     **error);
+guint64 id_phash_for_file               (const gchar *image_path,
+                                         GError     **error);
+gint    id_hash_hamming_distance        (const guint64 first_hash,
+                                         const guint64 second_hash);
 
-gint
-id_phash_hamming_distance (const guint64 first_hash, const guint64 second_hash)
-{
-    return ph_hamming_distance (first_hash, second_hash);
-}
+G_END_DECLS
+
+#endif /* __ID_HASH_H */

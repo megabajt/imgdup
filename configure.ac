@@ -73,6 +73,7 @@ dnl ***********************************************************************
 dnl Check for required packages
 dnl ***********************************************************************
 PKG_CHECK_MODULES(GLIB, [glib-2.0 >= 2.42 gobject-2.0])
+PKG_CHECK_MODULES(GDK_PIXBUF, [gdk-pixbuf-2.0])
 PKG_CHECK_MODULES(PHASH, [pHash >= 0.9.6])
 
 

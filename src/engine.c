@@ -23,7 +23,7 @@
 #include <glib.h>
 
 #include "engine.h"
-#include "phash.h"
+#include "hash.h"
 #include "result.h"
 
 #define ID_ENGINE_GET_PRIVATE(o) (G_TYPE_INSTANCE_GET_PRIVATE ((o), ID_TYPE_ENGINE, IdEnginePrivate))
@@ -133,7 +133,7 @@ id_engine_compare_files (IdEngine *engine, gchar **files)
                 
                 guint64 second_hash = *(guint64 *)(second_value);
 
-                gint distance = id_phash_hamming_distance (first_hash, second_hash);
+                gint distance = id_hash_hamming_distance (first_hash, second_hash);
                 gfloat score = (1.0f - (gfloat) distance / 64.0f) * 100.0f;
             
                 compare_results = g_list_append (compare_results, id_result_new (first->data, second->data, score));
