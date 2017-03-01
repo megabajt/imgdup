@@ -23,8 +23,11 @@
 #include "engine.h"
 #include "result.h"
 
+static gint threshold = 0;
+
 static GOptionEntry entries[] =
 {
+    { "threshold", 't', 0, G_OPTION_ARG_INT, &threshold, "Print results with similarity above N percent", "N" },
     { NULL }
 };
 
@@ -35,6 +38,8 @@ main(int argc, char* argv[])
     GError *error = NULL;
 
     context = g_option_context_new ("FILES");
+
+    g_option_context_add_main_entries (context, entries, NULL);
 
     if (!g_option_context_parse (context, &argc, &argv, &error)) {
         g_printerr ("%s\n", error->message);
@@ -48,6 +53,8 @@ main(int argc, char* argv[])
     }
 
     g_autoptr (IdEngine) engine = id_engine_new ();
+
+    id_engine_set_threshold (engine, threshold);
 
     GList *result = id_engine_compare_files (engine, argv + 1);
 

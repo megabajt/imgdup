@@ -30,11 +30,22 @@
 
 struct IdEnginePrivate
 {
+    gint        threshold;
+
     GHashTable *phash_table;
     GMutex      phash_table_lock;
 };
 
 G_DEFINE_TYPE (IdEngine, id_engine, G_TYPE_OBJECT)
+
+void
+id_engine_set_threshold (IdEngine *engine, gint threshold)
+{
+    g_return_if_fail (engine != NULL);
+    g_return_if_fail (ID_IS_ENGINE (engine));
+
+    engine->priv->threshold = threshold;
+}
 
 static GList *
 id_engine_get_absolute_file_paths (gchar **files)
@@ -135,8 +146,10 @@ id_engine_compare_files (IdEngine *engine, gchar **files)
 
                 gint distance = id_hash_hamming_distance (first_hash, second_hash);
                 gfloat score = (1.0f - (gfloat) distance / 64.0f) * 100.0f;
-            
-                compare_results = g_list_append (compare_results, id_result_new (first->data, second->data, score));
+
+                if (score > engine->priv->threshold) {
+                    compare_results = g_list_append (compare_results, id_result_new (first->data, second->data, score));
+                }
             }
         }
     }
@@ -149,6 +162,8 @@ id_engine_init (IdEngine *engine)
 {
     engine->priv = ID_ENGINE_GET_PRIVATE (engine);
     
+    engine->priv->threshold = 0;
+
     engine->priv->phash_table = g_hash_table_new_full (g_str_hash, g_str_equal, g_free, g_free);
     g_mutex_init (&engine->priv->phash_table_lock);
 }

@@ -52,6 +52,8 @@ G_DEFINE_AUTOPTR_CLEANUP_FUNC(IdEngine, g_object_unref)
 
 GType           id_engine_get_type      (void);
 IdEngine       *id_engine_new           (void);
+void            id_engine_set_threshold (IdEngine  *engine,
+                                         gint threshold);
 GList          *id_engine_compare_files (IdEngine  *engine,
                                          gchar    **files);
 
